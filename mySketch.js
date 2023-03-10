@@ -8,6 +8,7 @@ let centerY // coordonnée y du centre du cercle
 let a1, a2, a3;
 
 let song1, song2, song3;
+let reverb;
 
 var songs, actors;
 
@@ -139,6 +140,12 @@ function initUI(){
 
 function initActors(){
 	
+	// Créer un objet de réverbération avec les paramètres souhaités
+	reverb = new p5.Reverb();
+	reverb.process(song1, 3, 2); // réverbération avec un temps de réverbération de 3 secondes et un niveau de 2
+	reverb.process(song2, 3, 2); // réverbération avec un temps de réverbération de 3 secondes et un niveau de 2
+	reverb.process(song3, 3, 2); // réverbération avec un temps de réverbération de 3 secondes et un niveau de 2
+
 	// instanciate the Actor "Seconda" and add the song
 	let angle1 = -150;
 	let x1 = centerX + diam/2 * cos(angle1);
