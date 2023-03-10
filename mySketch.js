@@ -35,15 +35,19 @@ function isMouseInBox(x, y, w, h){
 }
 
 function createMetaTag() {
+	let head = select('head');
+	
 	let meta = createElement('meta');
 	meta.attribute('name', 'viewport');
 	meta.attribute('charset',"utf-8");
 	meta.attribute('content', 'width=device-width, initial-scale=1, shrink-to-fit=no');
-
+	meta.parent(head);
+	
 	// for pwa
 	let link1 = createElement('link');
 	link1.attribute('rel', 'manifest');
 	link1.attribute('href', 'manifest.json');
+	link1.parent(head);
 	
 	// for bootstrap
 	let link2 = createElement('link');
@@ -52,32 +56,30 @@ function createMetaTag() {
 	link2.attribute('href', 'https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css');
 	link2.attribute('integrity',"sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm");
 	link2.attribute('crossorigin',"anonymous");
+	link2.parent(head);
 	
 	let script1 =  createElement('script');
 	script1.attribute('src', 'https://code.jquery.com/jquery-3.2.1.slim.min.js');
 	script1.attribute('type', 'text/javascript');
 	script1.attribute('integrity',"sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN");
 	script1.attribute('crossorigin',"anonymous");
+	script1.parent(head);
 	
 	let script2 =  createElement('script');
 	script2.attribute('src', 'https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js');
 	script2.attribute('type', 'text/javascript');
 	script2.attribute('integrity',"sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q");
 	script2.attribute('crossorigin',"anonymous");
+	script2.parent(head);
 	
 	let script3 =  createElement('script');
 	script3.attribute('src', 'https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js');
 	script3.attribute('type', 'text/javascript');
 	script3.attribute('integrity',"sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl");
 	script3.attribute('crossorigin',"anonymous");
-	
-	let head = select('head');
-	meta.parent(head);
-	link1.parent(head);
-	link2.parent(head);
-	script1.parent(head);
-	script2.parent(head);
 	script3.parent(head);
+	
+	
 	
 }
 
@@ -175,6 +177,16 @@ function onReload(){
 	// reinit the UI
 	initUI();	
 	initActors();
+}
+
+function mousePressed() {
+      
+    // Set the value of fullscreen
+    // into the variable
+    let fs = fullscreen();
+      
+    // Call to fullscreen function
+    fullscreen(!fs); 
 }
 
 function onStartStopBtnClick(){
