@@ -37,13 +37,53 @@ function isMouseInBox(x, y, w, h){
 function createMetaTag() {
 	let meta = createElement('meta');
 	meta.attribute('name', 'viewport');
-	meta.attribute('content', 'user-scalable=no,initial-scale=1,maximum-scale=1,minimum-scale=1,width=device-width,height=device-height');
+	meta.attribute('charset',"utf-8");
+	meta.attribute('content', 'width=device-width, initial-scale=1, shrink-to-fit=no');
 
+	// for pwa
+	let link1 = createElement('link');
+	link1.attribute('rel', 'manifest');
+	link1.attribute('href', 'manifest.json');
+	
+	// for bootstrap
+	let link2 = createElement('link');
+	link2.attribute('rel', 'stylesheet');
+	link2.attribute('type',"text/css");
+	link2.attribute('href', 'https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css');
+	link2.attribute('integrity',"sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm");
+	link2.attribute('crossorigin',"anonymous");
+	
+	let script1 =  createElement('script');
+	script1.attribute('src', 'https://code.jquery.com/jquery-3.2.1.slim.min.js');
+	script1.attribute('type', 'text/javascript');
+	script1.attribute('integrity',"sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN");
+	script1.attribute('crossorigin',"anonymous");
+	
+	let script2 =  createElement('script');
+	script2.attribute('src', 'https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js');
+	script2.attribute('type', 'text/javascript');
+	script2.attribute('integrity',"sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q");
+	script2.attribute('crossorigin',"anonymous");
+	
+	let script3 =  createElement('script');
+	script3.attribute('src', 'https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js');
+	script3.attribute('type', 'text/javascript');
+	script3.attribute('integrity',"sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl");
+	script3.attribute('crossorigin',"anonymous");
+	
 	let head = select('head');
 	meta.parent(head);
+	link1.parent(head);
+	link2.parent(head);
+	script1.parent(head);
+	script2.parent(head);
+	script3.parent(head);
+	
 }
 
 function setup() {
+	//loadStyle('style.css');
+	
 	createMetaTag();
 	cnv = createCanvas(window.innerWidth, window.innerHeight);
 	
@@ -55,7 +95,10 @@ function setup() {
 	initUI();
 	
 	// define the large circle
-	diam = 300;
+	diam = width-100;
+	if (diam > 600) {
+		diam = 600;
+	}
 	centerX = width/2; 
 	centerY = height/2;
 	
@@ -70,20 +113,24 @@ function initUI(){
 	// UI
 	let controls = createElement('div');
   controls.style('display', 'flex');
+	controls.addClass("container");
   controls.position(20, 20);
 	
 	button_start = createButton('Start');
 	//button_start.style('background-color', col);
-  button_start.mouseClicked(onStartStopBtnClick);
+  button_start.addClass("btn btn-success mr-1");
+	button_start.mouseClicked(onStartStopBtnClick);
   button_start.parent(controls);
 	
 	sel = createSelect();
+	sel.addClass("btn btn-secondary mr-1");
   sel.option('Magnificat');
   sel.option('Laudate-Dominum');
   sel.changed(mySelectEvent);
 	sel.parent(controls);
 	
 	button_reload = createButton('Reload');
+	button_reload.addClass("btn btn-secondary mr-1");
 	button_reload.mouseClicked(onReload);
 	button_reload.parent(controls);
 }
@@ -94,36 +141,22 @@ function initActors(){
 	let angle1 = -150;
 	let x1 = centerX + diam/2 * cos(angle1);
 	let y1 = centerY + diam/2 * sin(angle1);
-	a1 = new Actor("S",x1,y1,30);
+	a1 = new Actor("S",x1,y1,diam/10);
 	a1.setSong(song1);
 	
 	// instanciate the Actor "Bassu" and add the song
 	let angle2 = -230;
   let x2 = centerX + diam/2 * cos(angle2);
   let y2 = centerY + diam/2 * sin(angle2);	
-	a2 = new Actor("B",x2,y2,30);
+	a2 = new Actor("B",x2,y2,diam/10);
 	a2.setSong(song2);
 	
 	// instanciate the Actor "Terza" and add the song
 	let angle3 = 0;
   let x3 = centerX + diam/2 * cos(angle3);
   let y3 = centerY + diam/2 * sin(angle3);
-	a3 = new Actor("T",x3,y3,30);
+	a3 = new Actor("T",x3,y3,diam/10);
 	a3.setSong(song3);
-		
-	// define FFT
-	//https://p5js.org/examples/sound-frequency-spectrum.html
-	fft1 = new p5.FFT(0.4, 512);
-	fft1.setInput(song1);
-	a1.setFFT(fft1);
-	
-	fft2 = new p5.FFT(0.4, 512);
-	fft2.setInput(song2);
-	a2.setFFT(fft2);
-	
-	fft3 = new p5.FFT(0.4, 512);
-	fft3.setInput(song3);
-	a3.setFFT(fft3);
 	
 	actors = [a1,a2,a3];
 
@@ -146,21 +179,23 @@ function onReload(){
 
 function onStartStopBtnClick(){
 	if (!song1.isPlaying()) {
-      song1.play();
+      song1.loop();
 			let val = int(!a1.muted)*(diam-dist(a1.x, a1.y, centerX, centerY))/1000
 			song1.setVolume(val);
+			button_start.addClass("btn btn-danger mr-1");
     } else {
+			button_start.addClass("btn btn-success mr-1");	
       song1.stop();
     }
 		if (!song2.isPlaying()) {
-      song2.play();
+      song2.loop();
 			let val = (diam-dist(a2.x, a2.y, centerX, centerY))/1000
 			song2.setVolume(val);
     } else {
       song2.stop();
     }
 		if (!song3.isPlaying()) {
-      song3.play();
+      song3.loop();
 			let val = (diam-dist(a3.x, a3.y, centerX, centerY))/1000
 			song3.setVolume(val);
     } else {
@@ -267,10 +302,10 @@ function setLineDash(list) {
 
 function draw() {
 	
-	// grand cercle en lignes discontinues
+	// grand cercle en lignes discontinues et gris clair
 	push();
 	background(0);
-	stroke(255);
+	stroke(220, 220, 220, 60);
   strokeWeight(2);
   noFill();
 	setLineDash([10, 10]); //longer stitches
