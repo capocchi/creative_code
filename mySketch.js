@@ -13,6 +13,9 @@ var songs, actors;
 
 let sel, button_start, button_reload;
 
+const elem = document.documentElement; // obtient l'élément HTML racine
+elem.requestFullscreen(); // met l'élément HTML en plein écran
+
 function preload() {
   soundFormats('mp3', 'ogg');
 	songs = {
