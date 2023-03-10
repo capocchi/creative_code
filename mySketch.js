@@ -186,15 +186,15 @@ function onReload(){
 	initActors();
 }
 
-function mousePressed() {
+//function mousePressed() {
       
     // Set the value of fullscreen
     // into the variable
-    let fs = fullscreen();
+//    let fs = fullscreen();
       
     // Call to fullscreen function
-    fullscreen(!fs); 
-}
+//    fullscreen(!fs); 
+//}
 
 function onStartStopBtnClick(){
 	if (!song1.isPlaying()) {
