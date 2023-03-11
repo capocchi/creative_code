@@ -205,36 +205,38 @@ function onReload(){
 
 function onStartStopBtnClick(){
 	if (!song1.isPlaying()) {
-      song1.loop();
-			let val = int(!a1.muted)*(diam-dist(a1.x, a1.y, centerX, centerY))/1000
-			song1.setVolume(val);
-			button_start.addClass("btn btn-danger mr-1");
-    } else {
-			button_start.addClass("btn btn-success mr-1");	
-      song1.stop();
+      	song1.loop();
+		let val = int(!a1.muted)*(diam-dist(a1.x, a1.y, centerX, centerY))/1000
+		song1.setVolume(val);
+    } else {	
+      	song1.stop();
     }
-		if (!song2.isPlaying()) {
-      song2.loop();
-			let val = (diam-dist(a2.x, a2.y, centerX, centerY))/1000
-			song2.setVolume(val);
+	
+	if (!song2.isPlaying()) {
+      	song2.loop();
+		let val = (diam-dist(a2.x, a2.y, centerX, centerY))/1000
+		song2.setVolume(val);
     } else {
-      song2.stop();
+      	song2.stop();
     }
-		if (!song3.isPlaying()) {
-      song3.loop();
-			let val = (diam-dist(a3.x, a3.y, centerX, centerY))/1000
-			song3.setVolume(val);
+	
+	if (!song3.isPlaying()) {
+      	song3.loop();
+		let val = (diam-dist(a3.x, a3.y, centerX, centerY))/1000
+		song3.setVolume(val);
     } else {
       song3.stop();
     }
 		
-		if (song1.isPlaying() && song2.isPlaying() && song3.isPlaying()) {
-			button_start.html('Stop');
+	if (song1.isPlaying() && song2.isPlaying() && song3.isPlaying()) {
+		button_start.html('Stop');
+		button_start.class("btn btn-danger mr-1");
 			//sel.disable();
-		} else {
-			button_start.html('Start');
+	} else {
+		button_start.html('Start');
+		button_start.class("btn btn-success mr-1");
 			//initUI();
-		}
+	}
 }
 
 // allows the mute of the song with the doubleClick
