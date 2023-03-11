@@ -62,7 +62,7 @@ function createMetaTag() {
 	//favicon
 	let link3 = createElement('link');
 	link3.attribute('rel', 'shortcut icon');
-	link3.attribute('href', 'favicon.png');
+	link3.attribute('href', 'favicon.ico');
 	link3.attribute('type',"image/x-icon");
 	link3.parent(head);
 
