@@ -59,6 +59,12 @@ function createMetaTag() {
 	link2.attribute('crossorigin',"anonymous");
 	link2.parent(head);
 	
+	//favicon
+	let link3 = createElement('link');
+	link3.attribute('rel', 'icon');
+	link3.attribute('href', 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.5.1/images/marker-icon.png');
+	link3.parent(head);
+
 	let script1 =  createElement('script');
 	script1.attribute('src', 'https://code.jquery.com/jquery-3.2.1.slim.min.js');
 	script1.attribute('type', 'text/javascript');
