@@ -61,8 +61,9 @@ function createMetaTag() {
 	
 	//favicon
 	let link3 = createElement('link');
-	link3.attribute('rel', 'icon');
-	link3.attribute('href', 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.5.1/images/marker-icon.png');
+	link3.attribute('rel', 'shortcut icon');
+	link3.attribute('href', 'favicon.png');
+	link3.attribute('type',"image/x-icon");
 	link3.parent(head);
 
 	let script1 =  createElement('script');
