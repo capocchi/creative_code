@@ -38,23 +38,23 @@ function isMouseInBox(x, y, w, h){
 function createMetaTag() {
 	let head = select('head');
 	
-	let meta = createElement('meta');
-	meta.attribute('name', 'viewport');
-	meta.attribute('charset',"utf-8");
-	meta.attribute('content', 'width=device-width, initial-scale=1, shrink-to-fit=no');
-	meta.parent(head);
+	//let meta = createElement('meta');
+	//meta.attribute('name', 'viewport');
+	//meta.attribute('charset',"utf-8");
+	//meta.attribute('content', 'width=device-width, initial-scale=1, shrink-to-fit=no');
+	//meta.parent(head);
 	
 	// for pwa
 
-	let link0 = createElement('link');
-	link0.attribute('rel', 'canonical');
-	link0.attribute('href', 'https://capocchi.github.io/creative_code/');
-	link0.parent(head);
+	//let link0 = createElement('link');
+	//link0.attribute('rel', 'canonical');
+	//link0.attribute('href', 'https://capocchi.github.io/creative_code/');
+	//link0.parent(head);
 
-	let link1 = createElement('link');
-	link1.attribute('rel', 'manifest');
-	link1.attribute('href', '/creative_code/manifest.json');
-	link1.parent(head);
+	//let link1 = createElement('link');
+	//link1.attribute('rel', 'manifest');
+	//link1.attribute('href', '/creative_code/manifest.json');
+	//link1.parent(head);
 	
 	// for bootstrap
 	let link2 = createElement('link');
