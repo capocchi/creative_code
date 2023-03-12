@@ -4,7 +4,7 @@
   "start_url": "/creative_code/",
   "display": "standalone",
   "background_color": "#000000",
-  "theme_color": "black",
+  "theme_color": "#000000",
   "scope": "/creative_code/",
   "description": "Learning about Corsican polyphonic singing.",
   "icons": [
