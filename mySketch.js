@@ -128,8 +128,8 @@ function setup() {
 function initUI(){
 	// UI
 	let controls = createElement('div');
-  controls.style('display', 'flex');
-	controls.addClass("container");
+  //controls.style('display', 'flex');
+	controls.addClass("vh-100 container-fluid");
   controls.position(20, 20);
 	
 	button_start = createButton('Start');
