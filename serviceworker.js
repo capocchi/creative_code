@@ -1,59 +1,71 @@
 
- if ('serviceWorker' in navigator) {
-  window.addEventListener('load', function() {
-    navigator.serviceWorker.register('/serviceworker.js').then(function(registration) {
-      console.log('ServiceWorker registration successful with scope: ', registration.scope);
-    }, function(err) {
-      console.log('ServiceWorker registration failed: ', err);
-    });
-  });
-}
+//if ('serviceWorker' in navigator) {
+//  window.addEventListener('load', function() {
+//    navigator.serviceWorker.register('/creative_code/serviceworker.js',{scope: '/creative_code/'}).then(function(registration) {
+//      console.log('ServiceWorker registration successful with scope: ', registration.scope);
+//    }, function(err) {
+//      console.log('ServiceWorker registration failed: ', err);
+//    });
+//  });
+//}
 
-window.addEventListener('beforeinstallprompt', function(e) {
-  // Empêche la bannière d'installation automatique
-  e.preventDefault();
-  // Affiche un bouton pour installer manuellement l'application
-  var installButton = document.getElementById('install-button');
-  installButton.style.display = 'block';
-  installButton.addEventListener('click', function() {
-    // Affiche la bannière d'installation
-    e.prompt();
-  });
-});
+var GHPATH = '/creative_code';
+var APP_PREFIX = 'ccpwa';
+var VERSION = 'version_001';
 
-self.addEventListener('install', function(e) {
-  e.waitUntil(
-    caches.open('my-cache').then(function(cache) {
-      return cache.addAll([
-        '/',
-        '/index.html',
-        '/Actor.js',
-        '/mySketch.js',
-        '/Magnificat-Bassu.mp3',
-        '/Magnificat-Seconda.mp3',
-        '/Magnificat-Terza.mp3',
-        '/Laudate-Dominum-Bassu.mp3',
-        '/Laudate-Dominum-Seconda.mp3',
-        '/Laudate-Dominum-Terza.mp3',
-        '/icon-192x192.png',
-        '/icon-512x512.png',
-      ]);
-    })
-  );
-});
+var URLS = [    
+  `${GHPATH}/`,
+  `${GHPATH}/index.html`,
+  `${GHPATH}/icon-192x192.png`,
+  `${GHPATH}/icon-512x512.png`,
+  `${GHPATH}/favicon.ico`,
+  `${GHPATH}/Laudate-Dominum-Seconda.mp3`,
+  `${GHPATH}/Laudate-Dominum-Terza.mp3`,
+  `${GHPATH}/Laudate-Dominum-Bassu.mp3`,
+  `${GHPATH}/Magnificat-Seconda.mp3`,
+  `${GHPATH}/Magnificat-Terza.mp3`,
+  `${GHPATH}/Magnificat-Bassu.mp3`,
+  `${GHPATH}/mySketch.js`
+]
 
-self.addEventListener('fetch', function(e) {
+var CACHE_NAME = APP_PREFIX + VERSION
+self.addEventListener('fetch', function (e) {
+  console.log('Fetch request : ' + e.request.url);
   e.respondWith(
-    caches.match(e.request).then(function(response) {
-      return response || fetch(e.request);
+    caches.match(e.request).then(function (request) {
+      if (request) { 
+        console.log('Responding with cache : ' + e.request.url);
+        return request
+      } else {       
+        console.log('File is not cached, fetching : ' + e.request.url);
+        return fetch(e.request)
+      }
     })
-  );
-});
+  )
+})
 
-self.addEventListener('push', function(e) {
-  var data = e.data.json();
-  self.registration.showNotification(data.title, {
-    body: data.message,
-    icon: '/icon-192x192.png'
-  });
-});
+self.addEventListener('install', function (e) {
+  e.waitUntil(
+    caches.open(CACHE_NAME).then(function (cache) {
+      console.log('Installing cache : ' + CACHE_NAME);
+      return cache.addAll(URLS)
+    })
+  )
+})
+
+self.addEventListener('activate', function (e) {
+  e.waitUntil(
+    caches.keys().then(function (keyList) {
+      var cacheWhitelist = keyList.filter(function (key) {
+        return key.indexOf(APP_PREFIX)
+      })
+      cacheWhitelist.push(CACHE_NAME);
+      return Promise.all(keyList.map(function (key, i) {
+        if (cacheWhitelist.indexOf(key) === -1) {
+          console.log('Deleting cache : ' + keyList[i] );
+          return caches.delete(keyList[i])
+        }
+      }))
+    })
+  )
+})
