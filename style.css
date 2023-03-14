@@ -1,0 +1,7 @@
+body {
+    margin: 0;
+    padding: 0;
+    height: 100vh; /* hauteur de l'écran */
+    width: 100%; /* largeur du viewport */
+    box-sizing: border-box;
+  }
