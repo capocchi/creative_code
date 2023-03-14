@@ -97,11 +97,13 @@ function createMetaTag() {
 	
 }
 
+
 function setup() {
 	//loadStyle('style.css');
 	
 	createMetaTag();
-	cnv = createCanvas(window.innerWidth, window.innerHeight);
+	cnv = createCanvas(windowWidth, windowHeight); // Définit la taille initiale du canvas à 800x600 pixels
+	fullscreen(); // Passe en mode plein écran
 	
 	colorMode(RGB);
   angleMode(DEGREES);
@@ -126,23 +128,24 @@ function setup() {
 }
 
 function initUI(){
+
+	
 	// UI
 	let controls = createElement('div');
-  //controls.style('display', 'flex');
 	controls.addClass("vh-100 container-fluid");
-  controls.position(20, 20);
+  	controls.position(20, 20);
 	
 	button_start = createButton('Start');
 	//button_start.style('background-color', col);
-  button_start.addClass("btn btn-success mr-1");
+  	button_start.addClass("btn btn-success mr-1");
 	button_start.mouseClicked(onStartStopBtnClick);
-  button_start.parent(controls);
+  	button_start.parent(controls);
 	
 	sel = createSelect();
 	sel.addClass("btn btn-secondary mr-1");
-  sel.option('Magnificat');
-  sel.option('Laudate-Dominum');
-  sel.changed(mySelectEvent);
+  	sel.option('Magnificat');
+  	sel.option('Laudate-Dominum');
+  	sel.changed(mySelectEvent);
 	sel.parent(controls);
 	
 	button_reload = createButton('Reload');
