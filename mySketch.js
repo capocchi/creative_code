@@ -97,15 +97,15 @@ function createMetaTag() {
 	
 }
 
-function touchEnded() {
-	fullscreen(true);
+function windowResized() {
+	resizeCanvas(windowWidth, windowHeight);
 }
 
 function setup() {
 	//loadStyle('style.css');
 	
 	createMetaTag();
-	cnv = createCanvas(windowWidth, windowHeight, allowFullscreen=true); // Définit la taille initiale du canvas à 800x600 pixels
+	cnv = createCanvas(windowWidth, windowHeight); // Définit la taille initiale du canvas à 800x600 pixels
 	
 	colorMode(RGB);
   angleMode(DEGREES);
