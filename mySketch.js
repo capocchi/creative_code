@@ -97,7 +97,7 @@ function createMetaTag() {
 	
 }
 
-function touchStarted() {
+function touchEnded() {
 	fullscreen(true);
 }
 
