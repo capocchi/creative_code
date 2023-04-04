@@ -2,6 +2,9 @@
 
 var fft1, fft2, fft3;
 
+let dragging = false;
+let isTouchDevice = false;
+
 let diam // diametre du cercle
 let centerX // coordonnée x du centre du cercle
 let centerY // coordonnée y du centre du cercle
@@ -106,7 +109,9 @@ function setup() {
 	
 	createMetaTag();
 	cnv = createCanvas(windowWidth, windowHeight); // Définit la taille initiale du canvas à 800x600 pixels
-	
+	noSmooth();
+  	frameRate(30);
+
 	colorMode(RGB);
   angleMode(DEGREES);
 	background(100);
@@ -127,6 +132,11 @@ function setup() {
 		
 	// Event handler
 	cnv.doubleClicked(onDBClick);
+
+	// Check if the current device supports touch events
+	if ('ontouchstart' in window) {
+		isTouchDevice = true;
+	  }
 }
 
 function initUI(){
@@ -288,51 +298,58 @@ function mySelectEvent() {
 	initActors();
 }
 
+
+function mousePressed(){
+	dragging=true;
+}
+
 // for the drag and drop function
 function mouseDragged() {
 	
-	actors.forEach(function(actor) {
-		// if mouse collides circle
-		if (isMouseInCircle(actor.x,actor.y,actor.d)) {
-			let actor_collided = null;
-			actors.forEach(function(other) {
-				if (other != actor) {
-					// now see if distance between two is less than sum of two radius'
-					let d = dist(actor.x, actor.y, other.x, other.y);
-					// find the actor collided
-					if (d <= actor.d + other.d) {
-						actor_collided = other;
+	if (!isTouchDevice && dragging) {
+		actors.forEach(function(actor) {
+			// if mouse collides circle
+			if (isMouseInCircle(actor.x,actor.y,actor.d)) {
+				let actor_collided = null;
+				actors.forEach(function(other) {
+					if (other != actor) {
+						// now see if distance between two is less than sum of two radius'
+						let d = dist(actor.x, actor.y, other.x, other.y);
+						// find the actor collided
+						if (d <= actor.d + other.d) {
+							actor_collided = other;
+						}
+					}
+				});
+				// if actor collided is founded
+				if (actor_collided == null){		
+				// change the position of the Actor depending on the mouse position
+					actor.x = mouseX;
+					actor.y = mouseY;
+				}else{
+					// rebound on the actor collided
+					if (actor_collided.x > actor.x){
+						actor.x -=1;
+					} else {
+						actor.x +=1;
+					}
+					if (actor_collided.y > actor.y){
+						actor.y -=1;
+					} else {
+						actor.y +=1;
 					}
 				}
-			});
-			// if actor collided is founded
-			if (actor_collided == null){		
-  			// change the position of the Actor depending on the mouse position
-				actor.x = mouseX;
-				actor.y = mouseY;
-			}else{
-				// rebound on the actor collided
-				if (actor_collided.x > actor.x){
-					actor.x -=1;
-				} else {
-					actor.x +=1;
+				
+				// song change when the actor is near of the center fof the big circle
+				let val = (diam-dist(actor.x, actor.y, centerX, centerY))/1000;
+				if (val<0) {
+					val=0;
 				}
-				if (actor_collided.y > actor.y){
-					actor.y -=1;
-				} else {
-					actor.y +=1;
-				}
-			}
-			
-			// song change when the actor is near of the center fof the big circle
-			let val = (diam-dist(actor.x, actor.y, centerX, centerY))/1000;
-			if (val<0) {
-				val=0;
-			}
-			actor.song.setVolume(val*int(!actor.muted));
-	}
+				actor.song.setVolume(val*int(!actor.muted));
+		}
 
-	});
+		});
+	}
 }
 
 function setLineDash(list) {
