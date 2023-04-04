@@ -1,13 +1,13 @@
 
-//if ('serviceWorker' in navigator) {
-//  window.addEventListener('load', function() {
-//    navigator.serviceWorker.register('/creative_code/serviceworker.js',{scope: '/creative_code/'}).then(function(registration) {
-//      console.log('ServiceWorker registration successful with scope: ', registration.scope);
-//    }, function(err) {
-//      console.log('ServiceWorker registration failed: ', err);
-//    });
-//  });
-//}
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function() {
+    navigator.serviceWorker.register('/creative_code/serviceworker.js',{scope: '/creative_code/'}).then(function(registration) {
+      console.log('ServiceWorker registration successful with scope: ', registration.scope);
+    }, function(err) {
+      console.log('ServiceWorker registration failed: ', err);
+    });
+  });
+}
 
 var GHPATH = '/creative_code';
 var APP_PREFIX = 'ccpwa';
