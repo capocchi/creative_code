@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html>
 <head>
     <meta charset='utf-8'>
@@ -10,9 +10,7 @@
     <script>
         THREEx.ArToolkitContext.baseURL = 'https://raw.githack.com/jeromeetienne/ar.js/master/three.js/'
     </script>
-
 </head>
-
 
 <body style='margin: 0; overflow: hidden;'>
     <a-scene
@@ -22,7 +20,57 @@
         
         <a-camera gps-camera rotation-reader></a-camera>
 
-        <a-entity gltf-model="./assets/magnemite/scene.gltf" scale="0.1 0.1 0.1" gps-entity-place="longitude: 9.448166; latitude: 42.708488;" />
+        <a-entity gltf-model="./assets/magnemite/scene.gltf" scale="0.15 0.15 0.15" gps-entity-place="longitude: 9.448166; latitude: 42.708488;" />
 
 	</a-scene>
-</body>
+</body> -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AR Web App</title>
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <script src="https://cdn.rawgit.com/jeromeetienne/AR.js/2.3.0/aframe/build/aframe-ar.js"></script>
+    <script>
+      AFRAME.registerComponent("position-updater", {
+        init: function () {
+          this.cameraEl = document.querySelector("[camera]");
+          this.spheres = document.querySelectorAll("a-sphere");
+          this.previousPosition = new THREE.Vector3();
+          this.cameraEl.addEventListener("positionChanged", this.updatePosition.bind(this));
+        },
+        updatePosition: function () {
+          const currentPosition = this.cameraEl.getAttribute("position");
+          const positionChange = new THREE.Vector3().copy(currentPosition).sub(this.previousPosition);
+          this.previousPosition.copy(currentPosition);
+          this.spheres.forEach(function (sphere, index) {
+            const spherePosition = sphere.getAttribute("position");
+            const distance = currentPosition.distanceTo(new THREE.Vector3().copy(spherePosition));
+            const volume = 1 / (distance + 1); // Adjust the volume based on distance
+            const audioEl = sphere.querySelector("a-entity").components.sound;
+            audioEl.volume = volume;
+          });
+        },
+      });
+    </script>
+  </head>
+  <body>
+    <a-scene embedded arjs>
+      <a-marker preset="hiro">
+        <a-sphere position="0 0 0">
+          <a-entity sound="src: url(Laudate-Dominum-Bassu.mp3); autoplay: true; loop: true;"></a-entity>
+        </a-sphere>
+        <a-sphere position="-0.5 0 0.5">
+          <a-entity sound="src: url(Laudate-Dominum-Seconda.mp3); autoplay: true; loop: true;"></a-entity>
+        </a-sphere>
+        <a-sphere position="0.5 0 0.5">
+          <a-entity sound="src: url(Laudate-Dominum-Terza.mp3); autoplay: true; loop: true;"></a-entity>
+        </a-sphere>
+        <a-entity position-updater></a-entity>
+      </a-marker>
+      <a-entity camera></a-entity>
+    </a-scene>
+  </body>
+</html>
