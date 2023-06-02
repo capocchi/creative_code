@@ -10,7 +10,21 @@
     <script>
         THREEx.ArToolkitContext.baseURL = 'https://raw.githack.com/jeromeetienne/ar.js/master/three.js/'
     </script>
+
+    <script>
+        window.onload = () => {
+        var n = document.querySelector('a-entity'); // <-- find first node of that type
+        console.log(n);
+        n.flushToDOM();  // debug aid: this will show the AFrame attribute values
+        console.log(n);  // by default they are not written back to DOM because expensive
+        var distanceMsg = n.getAttribute('distanceMsg'); // <-- returns null, so for show
+        distanceMsg = "so far away"; // just use something else
+        n.setAttribute('text', distanceMsg); // <-- this is how you change the text to display
+        };
+    </script>
+
 </head>
+
 
 <body style='margin: 0; overflow: hidden;'>
     <a-scene
