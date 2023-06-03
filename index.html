@@ -32,8 +32,6 @@
   <head>
     <meta charset='utf-8'>
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    
     <title>Web App AR</title>
     <script src='https://aframe.io/releases/0.9.2/aframe.min.js'></script>
     <script src="https://raw.githack.com/jeromeetienne/AR.js/master/aframe/build/aframe-ar.min.js"></script>
@@ -70,22 +68,6 @@
           const audioEl = this.el.querySelector("a-entity").components.sound;
           audioEl.paused ? audioEl.playSound() : audioEl.pauseSound();
         },
-      });
-
-      function toggleFullscreen() {
-        const scene = document.querySelector("a-scene");
-        if (!document.fullscreenElement) {
-          scene.requestFullscreen();
-        } else {
-          if (document.exitFullscreen) {
-            document.exitFullscreen();
-          }
-        }
-      }
-
-      document.addEventListener("DOMContentLoaded", function () {
-        const scene = document.querySelector("a-scene");
-        scene.enterVR();
       });
 
     </script>
