@@ -46,9 +46,9 @@
           this.previousPosition = new THREE.Vector3();
           this.cameraEl.addEventListener("positionChanged", this.updatePosition.bind(this));
           this.spheres.forEach((sphere) => {
-            sphere.addEventListener("markerFound", () => this.toggleAudio(sphere, true));
-            sphere.addEventListener("markerLost", () => this.toggleAudio(sphere, false));
-            this.toggleAudio(sphere, false); // Set initial volume to 0 for all spheres
+            sphere.addEventListener("markerFound", () => this.toggleAudio(sphere, false));
+            sphere.addEventListener("markerLost", () => this.toggleAudio(sphere, true));
+            this.toggleAudio(sphere, true); // Set initial volume to 0 for all spheres
           });
         },
         updatePosition: function () {
