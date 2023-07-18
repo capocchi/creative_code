@@ -48,6 +48,7 @@
           this.spheres.forEach((sphere) => {
             sphere.addEventListener("markerFound", () => this.toggleAudio(sphere, true));
             sphere.addEventListener("markerLost", () => this.toggleAudio(sphere, false));
+            this.toggleAudio(sphere, false); // Set initial volume to 0 for all spheres
           });
         },
         updatePosition: function () {
@@ -74,6 +75,7 @@
         },
       });
     </script>
+    
     
   </head>
   <body style='margin: 0px; overflow: hidden;'>
