@@ -45,6 +45,10 @@
           this.spheres = document.querySelectorAll("a-sphere");
           this.previousPosition = new THREE.Vector3();
           this.cameraEl.addEventListener("positionChanged", this.updatePosition.bind(this));
+          this.spheres.forEach((sphere) => {
+            sphere.addEventListener("markerFound", () => this.toggleAudio(sphere, true));
+            sphere.addEventListener("markerLost", () => this.toggleAudio(sphere, false));
+          });
         },
         updatePosition: function () {
           const currentPosition = this.cameraEl.getAttribute("position");
@@ -58,19 +62,19 @@
             audioEl.volume = volume;
           });
         },
-      });
-
-      AFRAME.registerComponent("toggle-audio", {
-        init: function () {
-          this.el.addEventListener("touchstart", this.toggleAudio.bind(this));
+        toggleAudio: function (sphere, mute) {
+          const audioEl = sphere.querySelector("a-entity").components.sound;
+          if (mute) {
+            audioEl.setAttribute("volume", 0); // Mute the audio by setting volume to 0
+          } else {
+            // Restore the audio volume to its previous value when unmuting
+            const volume = 1 / (this.cameraEl.getAttribute("position").distanceTo(sphere.getAttribute("position")) + 1);
+            audioEl.setAttribute("volume", volume);
+          }
         },
-        toggleAudio: function () {
-          const audioEl = this.el.querySelector("a-entity").components.sound;
-          audioEl.paused ? audioEl.playSound() : audioEl.pauseSound();
-        },
       });
-
     </script>
+    
   </head>
   <body style='margin: 0px; overflow: hidden;'>
     <a-scene embedded arjs="debugUIEnabled: false">
